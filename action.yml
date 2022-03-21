@@ -1,4 +1,4 @@
-name: 'Changelog Reader'
+name: 'Akylas Changelog Reader'
 description: 'Read and parse the CHANGELOG file of the project'
 branding:
   icon: 'align-right'
