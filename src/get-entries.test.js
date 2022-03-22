@@ -73,7 +73,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - README now uses the correct version number in the examples
 
-## [1.0.1] - 2020-02-12
+# [1.0.1] - 2020-02-12
 ### Fixed
 - Remove template's old behavior
 
