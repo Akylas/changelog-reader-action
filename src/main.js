@@ -23,6 +23,8 @@ exports.main = async function main() {
     const rawData = await readFile(changelogPath)
     const versions = getEntries(rawData)
       .map(parseEntry)
+      
+    core.info(`versions: ${versions}`)
 
     if (validationDepth != 0)
     {
