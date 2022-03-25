@@ -19,11 +19,11 @@ exports.main = async function main() {
       core.warning(`No target version specified. Will try to return the most recent one in the changelog file.`)
     }
 
-    core.startGroup('Parse data')
+    core.startGroup('Parse changelog data')
     const rawData = await readFile(changelogPath)
     const versions = getEntries(rawData)
       .map(parseEntry)
-      
+
     core.info(`versions: ${versions}`)
 
     if (validationDepth != 0)
@@ -35,7 +35,7 @@ exports.main = async function main() {
         .forEach(validateEntry)
     }
 
-    core.debug(`${versions.length} version logs found`)
+    core.info(`${versions.length} version logs found`)
     core.endGroup()
 
     const version = getVersionById(versions, targetVersion)
