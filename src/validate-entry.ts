@@ -17,7 +17,7 @@ export function validateEntry(entry: ChangelogEntry, idx: number): void {
     throw new Error(`Changelog versions out of order. Version ${entry.id} cannot come after ${lastVersion}.`)
   }
 
-  const entryText = (entry as any).changes || entry.text  // backwards compatible
+  const entryText = entry.changes || entry.text  // backwards compatible
   const changes = entryText
     .split(/^###\s*/gm)
     .filter((content: string) => content.replace(/\s+/g, '') != '')

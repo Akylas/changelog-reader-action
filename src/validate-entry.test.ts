@@ -48,7 +48,7 @@ const entryDescriptionPatch = `
 - **SECURITY** The list components don't use the nth-child CSS attributes in favor of nth-of-type.
 `
 
-type TestEntry = Pick<ChangelogEntry, 'id' | 'status'> & { changes: string }
+type TestEntry = Pick<ChangelogEntry, 'id' | 'status'> & { changes: string; text?: string; date?: string }
 
 describe('validateEntry', () => {
   test('validate multiple versions without error', () => {

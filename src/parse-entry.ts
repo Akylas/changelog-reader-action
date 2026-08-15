@@ -5,6 +5,7 @@ export interface ChangelogEntry {
   date: string | undefined
   status: 'released' | 'prereleased' | 'unreleased' | 'yanked'
   text: string
+  changes?: string
 }
 
 export function parseEntry(entry: string): ChangelogEntry {
