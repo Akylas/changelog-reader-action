@@ -1,15 +1,15 @@
-const utils = require('util')
-const fs = require('fs')
-const core = require('@actions/core')
+import { promisify } from 'util'
+import { readFile as fsReadFile } from 'fs'
+import * as core from '@actions/core'
 
-const { validateEntry } = require('./validate-entry')
-const { parseEntry } = require('./parse-entry')
-const { getEntries } = require('./get-entries')
-const { getVersionById } = require('./get-version-by-id')
+import { validateEntry } from './validate-entry'
+import { parseEntry } from './parse-entry'
+import { getEntries } from './get-entries'
+import { getVersionById } from './get-version-by-id'
 
-const readFile  = utils.promisify(fs.readFile)
+const readFile = promisify(fsReadFile)
 
-exports.main = async function main() {
+export async function main(): Promise<void> {
   try {
     const changelogPath = core.getInput('path') || './CHANGELOG.md'
     const targetVersion = core.getInput('version') || null
@@ -26,8 +26,7 @@ exports.main = async function main() {
 
     core.info(`versions: ${versions}`)
 
-    if (validationDepth != 0)
-    {
+    if (validationDepth != 0) {
       const releasedVersions = versions.filter(version => version.status != 'unreleased')
       releasedVersions
         .reverse()
@@ -54,6 +53,6 @@ exports.main = async function main() {
     core.setOutput('changes', version.text)
   }
   catch (error) {
-    core.setFailed(error.message)
+    core.setFailed((error as Error).message)
   }
 }

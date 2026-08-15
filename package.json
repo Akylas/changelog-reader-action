@@ -17,21 +17,25 @@
     "email": "dev@nathanaelcherrier.com",
     "url": "https://nathanaelcherrier.com"
   },
+  "engines": {
+    "node": ">=24"
+  },
   "scripts": {
-    "lint": "eslint src/**/*.js",
-    "package": "ncc build index.js -o dist",
-    "test": "npm run lint && jest"
+    "build": "tsc",
+    "package": "ncc build dist/index.js -o dist/bundle && cp dist/bundle/index.js dist/index.js && rm -rf dist/bundle",
+    "test": "vitest run"
   },
   "dependencies": {
-    "@actions/core": "^1.2.6"
+    "@actions/core": "^2.0.0",
+    "semver": "^7.3.2",
+    "yaml": "^2.0.0"
   },
   "devDependencies": {
-    "@types/jest": "^25.1.4",
-    "@types/semver": "^7.3.3",
-    "@zeit/ncc": "^0.20.5",
-    "eslint": "^6.3.0",
-    "jest": "^25.1.0",
-    "semver": "^7.3.2"
+    "@types/node": "^26.2.0",
+    "@types/semver": "^7.7.0",
+    "@vercel/ncc": "^0.45.0",
+    "typescript": "^6.0.0",
+    "vitest": "^4.0.0"
   },
   "keywords": [
     "GitHub",
