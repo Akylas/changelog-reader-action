@@ -1,4 +1,5 @@
-const { getEntries } = require('./get-entries')
+import { describe, test, expect } from 'vitest'
+import { getEntries } from './get-entries'
 
 const DATA_v = `
 # Changelog
@@ -86,34 +87,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [1.0.0]: https://github.com/mindsers/changelog-reader-action/releases/tag/v1.0.0
 `
 
-test('retreive entries from test (tag patern: vX.X.X)', () => {
-  const output = getEntries(DATA_v)
-  const versionRegex = /^\[(v[0-1]+|unreleased)/i
+describe('getEntries', () => {
+  test('retreive entries from test (tag patern: vX.X.X)', () => {
+    const output = getEntries(DATA_v)
+    const versionRegex = /^\[(v[0-1]+|unreleased)/i
 
-  expect(output.length).toEqual(3)
-  expect(output[0]).toMatch(versionRegex)
-  expect(output[1]).toMatch(versionRegex)
-  expect(output[2]).toMatch(versionRegex)
-})
+    expect(output.length).toEqual(3)
+    expect(output[0]).toMatch(versionRegex)
+    expect(output[1]).toMatch(versionRegex)
+    expect(output[2]).toMatch(versionRegex)
+  })
 
-test('retreive entries from test (tag patern: X.X.X)', () => {
-  const output = getEntries(DATA)
-  const versionRegex = /^\[([0-1]+|unreleased)/i
+  test('retreive entries from test (tag patern: X.X.X)', () => {
+    const output = getEntries(DATA)
+    const versionRegex = /^\[([0-1]+|unreleased)/i
 
-  expect(output.length).toEqual(3)
-  expect(output[0]).toMatch(versionRegex)
-  expect(output[1]).toMatch(versionRegex)
-  expect(output[2]).toMatch(versionRegex)
-})
+    expect(output.length).toEqual(3)
+    expect(output[0]).toMatch(versionRegex)
+    expect(output[1]).toMatch(versionRegex)
+    expect(output[2]).toMatch(versionRegex)
+  })
 
-// https://github.com/mindsers/changelog-reader-action/issues/8
-test('retreive entries from test (complex SEMVER)', () => {
-  const output = getEntries(DATA_complex)
-  const versionRegex = /^\[(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?/
+  // https://github.com/mindsers/changelog-reader-action/issues/8
+  test('retreive entries from test (complex SEMVER)', () => {
+    const output = getEntries(DATA_complex)
+    const versionRegex = /^\[(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?/
 
-  expect(output.length).toEqual(4)
-  expect(output[0]).toMatch(versionRegex)
-  expect(output[1]).toMatch(versionRegex)
-  expect(output[2]).toMatch(versionRegex)
-  expect(output[3]).toMatch(versionRegex)
+    expect(output.length).toEqual(4)
+    expect(output[0]).toMatch(versionRegex)
+    expect(output[1]).toMatch(versionRegex)
+    expect(output[2]).toMatch(versionRegex)
+    expect(output[3]).toMatch(versionRegex)
+  })
 })

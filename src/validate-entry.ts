@@ -1,9 +1,11 @@
-const { diff, lt, valid } = require('semver')
-const known = []
+import { diff, lt, valid } from 'semver'
+import { ChangelogEntry } from './parse-entry'
 
-exports.validateEntry = (entry, idx) => {
+const known: string[] = []
+
+export function validateEntry(entry: ChangelogEntry, idx: number): void {
   if (entry.status == 'unreleased') return // no validation on unreleased versions
-  if (!valid(entry.id)) {  // Validate verion is semantically correct
+  if (!valid(entry.id)) {  // Validate version is semantically correct
     throw new Error(`${entry.id} is not a valid semantic version.`)
   }
 
@@ -15,15 +17,16 @@ exports.validateEntry = (entry, idx) => {
     throw new Error(`Changelog versions out of order. Version ${entry.id} cannot come after ${lastVersion}.`)
   }
 
-  const changes = (entry.changes || entry.text)  // backwards compatible
+  const entryText = (entry as any).changes || entry.text  // backwards compatible
+  const changes = entryText
     .split(/^###\s*/gm)
-    .filter(content => content.replace(/\s+/g, '') != '')
-    .map(content => {
+    .filter((content: string) => content.replace(/\s+/g, '') != '')
+    .map((content: string) => {
       const [type, ...items] = content.trim().split(/\r*\n/)
-      return { type: type.toLowerCase().trim(), items}
+      return { type: type.toLowerCase().trim(), items }
     })
 
-  changes.forEach(change => {
+  changes.forEach((change: { type: string; items: string[] }) => {
     if (!change.items.length) {  // Validate that there are changes listed under each section
       throw new Error(`The '${change.type}' section under version ${entry.id} does not contain any listed changes under the heading.`)
     }
@@ -32,7 +35,7 @@ exports.validateEntry = (entry, idx) => {
   if (!lastVersion) return  // No further validation needed because there is no previous version to compare against
 
   const versionDiff = diff(lastVersion, entry.id)
-  const allowedTypes = []
+  const allowedTypes: string[] = []
   switch (versionDiff) {
     case 'prerelease':
     case 'prepatch':
@@ -62,8 +65,8 @@ exports.validateEntry = (entry, idx) => {
   }
   if (allowedTypes.length) {
     const disallowedTypes = changes
-      .map(change => change.type)
-      .filter(type => allowedTypes.indexOf(type) === -1)
+      .map((change: { type: string }) => change.type)
+      .filter((type: string) => allowedTypes.indexOf(type) === -1)
     if (disallowedTypes.length) {  // Validates that only certain allowed types are in the change set
       throw new Error(`The section${(disallowedTypes.length == 1 ? '' : 's')} '${disallowedTypes.join(', ')}' under version ${entry.id} ${(disallowedTypes.length == 1 ? 'is' : 'are')} not allowed in a ${versionDiff} release type.`)
     }
